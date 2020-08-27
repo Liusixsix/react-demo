@@ -1,0 +1,14 @@
+.nav-footer{
+    height: 50px;
+    background: #fff;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 0 1px #e1e1e1;
+    display: flex;  
+}
+
+.nav-footer  li{
+    flex: 1;
+}

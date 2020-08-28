@@ -1,61 +1,92 @@
-import React, { useRef, useState, useMemo } from 'react'
-import { Link, Route, useRouteMatch,useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { add, min } from '../../store/actions'
-
-type Data = {
-    time: number
+import React, { useRef, useState, useMemo, useEffect } from 'react'
+import { Link, Route, useRouteMatch, useHistory } from 'react-router-dom'
+import classnames from 'classnames'
+import './index.scss'
+interface list {
+    id: number,
+    father_id: number,
+    status: number
+    name: string
+    _child?: list[]
 }
 
-const Aa: React.FC<Data> = ({ children, time }) => {
-    const history = useHistory()
-    function changeTime(time: number): string {
-        console.log('changeTime excuted...')
-        return new Date(time).toISOString()
+const lists: list[] = [
+    {
+        id: 1,
+        father_id: 0,
+        status: 1,
+        name: '生命科学竞赛',
+        _child: [
+            {
+                id: 2,
+                father_id: 1,
+                status: 1,
+                name: '野外实习类',
+                _child: [{ id: 3, father_id: 2, status: 1, name: '植物学' }],
+            },
+            {
+                id: 7,
+                father_id: 1,
+                status: 1,
+                name: '科学研究类',
+                _child: [
+                    { id: 8, father_id: 7, status: 1, name: '植物学与植物生理学' },
+                    { id: 9, father_id: 7, status: 1, name: '动物学与动物生理学' },
+                    { id: 10, father_id: 7, status: 1, name: '微生物学' },
+                    { id: 11, father_id: 7, status: 1, name: '生态学' },
+                ],
+            },
+            { id: 71, father_id: 1, status: 1, name: '添加' },
+        ],
+    },
+    {
+        id: 56,
+        father_id: 0,
+        status: 1,
+        name: '考研相关',
+        _child: [
+            { id: 57, father_id: 56, status: 1, name: '政治' },
+            { id: 58, father_id: 56, status: 1, name: '外国语' },
+        ],
+    },
+]
+
+const NestMenu = (props) => {
+    const { list  } = props
+
+    const [activeid, setId] = useState(null)
+
+    const getSubMenu = () => {
+        if (Array.isArray(list) && list.length) {
+            return ((list.find(({ id }) => id === activeid) || {})._child) || []
+        }
     }
 
-    const newTime: string = useMemo(() => {
-        return changeTime(time)
-    }, [time])
-
+    const setAction = (id) => {
+        setId(id)
+    }
     return (
-        <div>{children} -- {newTime}</div>
-    )
-}
-
-const About = (props) => {
-    const history = useHistory()
-    const { count, add, min, Async } = props
-    const inputEl = useRef<HTMLInputElement>(null)
-    const [time, setTime] = useState<number>(0)
-    const [random, setRandom] = useState<number>(0)
-    const { path } = useRouteMatch()
-
-    return (
-        <div>
-            
-            <h1>{count}</h1>
-      
-            <button onClick={() => add()}>加</button>
-            <button onClick={() => min()}>减</button>
-            <button onClick={() => history.goBack()}>异步</button>
-            <button onClick={() => setTime(new Date().getTime())}>获取当前时间</button>
-            <button onClick={() => setRandom(Math.random())}>获取当前随机数</button>
-            <Aa time={time}>{random}</Aa>
+        <div className='wrap' >
+            <div className="menu-wrap">
+                {
+                    list && list.map((item: list, index: number) => {
+                        return (
+                            <div className='menu-item' key={item.id} onClick={() => setAction(item.id)}>
+                                {item.name}
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            {list && <NestMenu list={getSubMenu()}></NestMenu>}
         </div>
-    )
+    ) 
 }
 
-
-const mapStateToProps = state => {
-    return {
-        count: state
-    }
+const Demo = () => {
+    const [list, setList] = useState(lists)
+    const activeId = 1
+    return <NestMenu list={list} activeId={1} ></NestMenu>
 }
 
-const mapDispatchToProps = dispatch => ({
-    add: () => { dispatch(add()) },
-    min: () => { dispatch(min()) }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(About)
+export default Demo

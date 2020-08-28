@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    .wrap{
+        height: calc(100vh - 100px);
+      &.min-wrap{
+          height: calc(100vh - 180px);
+      }
+    //  flex: 1;
+        // overflow: hidden;
+    }
+}   

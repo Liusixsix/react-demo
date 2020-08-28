@@ -2,50 +2,37 @@ import React, { useEffect, useRef, useState } from 'react'
 import Scroll from '../../common/scroll'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
-import './index.css'
+
+import { throttle } from '../../utils/index'
+import SearchBar from '../../common/title'
+import './index.scss'
 
 
 const Home: React.FC = () => {
     const scrollEl = useRef(null)
-    const [scrollTop, SetScrollTop] = useState(0)
+    const [scrollTop, SetScrollTop] = useState(false)
 
-    useEffect(() => {
-        scrollEl.current.addEventListener('scroll', handleScroll)
-        return () => {
-            scrollEl.current.removeEventListener('scroll', handleScroll)
-        }
-    }, [])
-
-    const handleScroll = (e) => {
-        SetScrollTop(e.target.scrollTop)
+    const pullUp = () => {
+        console.log('pullUp')
+    }
+    const onScroll = ({ y }) => {
+        SetScrollTop(y < 0)
     }
 
     return (
-        <div>
-            <div className='search-bar-wrapper'>
-                <div className={classnames('title-search-wrapper',{'show-search':scrollTop>0})}>
-                    <div className="title-search-page-wrapper">
-                        <span>书城</span>
+        <div className='container'>
+            <SearchBar scrollTop={scrollTop}></SearchBar>
+            <div className={classnames('wrap', { 'min-wrap': !scrollTop })} ref={scrollEl}>
+                <Scroll pullUp={pullUp} onScroll={throttle(onScroll, 100)} >
+                    <div>
+                        <Link to='/about'>about</Link>
+                        {
+                            [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item, index) => {
+                                return <h1 key={index}>{item}</h1>
+                            })
+                        }
                     </div>
-                    <div className='icon-back'>
-                        返回
-                    </div>
-                    <div className="search-wrapper">
-                        <div className="search-back">返回</div>
-                        <div className='search-bg'>
-                            <input type="text" className='search' />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className={classnames('wrap', { h: scrollTop > 0 })} ref={scrollEl}>
-           
-            <Link to='/about'>about</Link>
-                {
-                    [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item, index) => {
-                        return <h1 key={index}>{item}</h1>
-                    })
-                }
+                </Scroll>
             </div>
         </div>
     )

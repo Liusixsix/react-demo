@@ -52,7 +52,7 @@ const lists: list[] = [
 ]
 
 const NestMenu = (props) => {
-    const { list  } = props
+    const { list } = props
 
     const [activeid, setId] = useState(null)
 
@@ -80,7 +80,7 @@ const NestMenu = (props) => {
             </div>
             {list && <NestMenu list={getSubMenu()}></NestMenu>}
         </div>
-    ) 
+    )
 }
 
 const Demo = () => {

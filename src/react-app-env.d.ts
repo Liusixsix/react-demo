@@ -9,6 +9,7 @@ declare namespace NodeJS {
   }
 }
 
+
 declare module '*.bmp' {
   const src: string;
   export default src;
@@ -66,3 +67,4 @@ declare module '*.module.sass' {
 }
 
 declare module 'better-scroll'
+

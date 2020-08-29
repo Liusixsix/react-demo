@@ -1,21 +1,53 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import Scroll from '../../baseUI/scroll'
+import * as actionTypes from './store/actionCreators'
+import Slider from '../../components/slider'
+import RecommendList from '../../components/list'
 import './index.scss'
 
-const Recommend = ()=>{
+const Recommend = (props) => {
+    const { bannerList, recommendList, getBannerDataDispatch, getRecommendListDispatch } = props
+
+    useEffect(() => {
+        if (!bannerList.length) {
+            getBannerDataDispatch()
+        }
+        if (!recommendList.length) {
+            getRecommendListDispatch()
+        }
+    }, [])
+
+
+
     return (
         <div className='Recommend'>
             <Scroll>
                 <div>
-                    {
-                    [1,2,3,43,53,454,654,1,2,3,43,53,4564,65,4,654,1,2,3,43,53,4564,65,4,654].map(item=>{
-                        return <div>{item}</div>
-                        })
-                    }
+                    <Slider bannerList={bannerList}></Slider>
+                    <RecommendList recommendList={recommendList}></RecommendList>
                 </div>
             </Scroll>
         </div>
     )
 }
 
-export default Recommend
+const mapStateToProps = (state) => ({
+    bannerList: state.recommend.bannerList,
+    recommendList: state.recommend.recommendList
+})
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getBannerDataDispatch() {
+            dispatch(actionTypes.getBannerList())
+        },
+        getRecommendListDispatch() {
+            dispatch(actionTypes.getRecommendList())
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Recommend)

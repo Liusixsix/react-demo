@@ -5,7 +5,6 @@ import { HashRouter as Router } from "react-router-dom";
 import { renderRoutes } from 'react-router-config'
 import "lib-flexible";
 import routes from './routes'
-import App from "./App";
 import store from "./store";
 import "./index.css";
 

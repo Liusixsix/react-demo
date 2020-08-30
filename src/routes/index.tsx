@@ -12,6 +12,7 @@ const SuspenseComponent = (Component) => (props) => {
 
 const Home = lazy(() => import("../pages/Home"));
 const Recommend = lazy(()=>import('../pages/recommend'))
+const Singers  = lazy(()=>import('../pages/singers'))
 
 export default  [
   {
@@ -30,6 +31,10 @@ export default  [
               path: "/recommend",
               component: SuspenseComponent(Recommend),
             },   
+            {
+              path: "/singers",
+              component: SuspenseComponent(Singers),
+            },
           ]
         },
         // {

@@ -8,12 +8,16 @@
     }
 
     .list{
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-around;
+      justify-content: space-between;
         &:after {
             content: "";
-            flex: auto;
+            height: 0;
+            // flex: auto;
+            width: 32%;
+            // min-width: 10px;
           }
 
           .listItem{
@@ -29,7 +33,7 @@
                 background: linear-gradient(hsla(0,0%,43%,.4),hsla(0,0%,100%,0));
               }
               .imgWrap{
-                  height: 0;
+                  height: 0px;
                   padding-bottom: 100%;
                   position: relative;
                 .play_count{
@@ -39,7 +43,7 @@
                     top: 2px;
                     line-height: 15px;
                     font-size: 12px;
-                     color: rgb(241, 241, 241);
+                    color: rgb(241, 241, 241);
                 }
                 img {
                     position: absolute;

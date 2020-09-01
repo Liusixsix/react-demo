@@ -10,7 +10,7 @@ const Singers = (props) => {
     const scrollRef = useRef(null);
     const { alpha, category, singerList } = props
 
-    const { updateAlpha, updateCategory, getHotSinger, pullUpRefresh } = props
+    const { updateAlpha, updateCategory, getHotSinger, pullUpRefresh,pullDownRefresh } = props
 
     const handleUpdateCategory = (newVal) => {
         if (category === newVal) return
@@ -29,13 +29,17 @@ const Singers = (props) => {
     }
 
     const handlePullDown = () => {
-        console.log('下拉刷新')
+        pullDownRefresh(category,alpha)
     }
+    const handleClickSinger =(item) =>{
+        console.log(item)
+    }
+
     useEffect(() => {
         if (!singerList.length && !alpha && !category) {
             getHotSinger()
         }
-    }, [])
+    }, [alpha, category, getHotSinger, singerList.length])
 
     const renderSingerList = () => {
         const { singerList } = props
@@ -44,7 +48,7 @@ const Singers = (props) => {
                 {
                     singerList.map((item, index) => {
                         return (
-                            <div className="item" key={index}>
+                            <div className="item" key={index} onClick={()=>handleClickSinger(item)}>
                                 <div className='img_wrapper'>
                                     <img src={`${item.picUrl}?params=300x300`} width='100%' height='100%' alt="" />
                                 </div>

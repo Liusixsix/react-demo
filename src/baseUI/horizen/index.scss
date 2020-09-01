@@ -1,0 +1,28 @@
+.horizental{
+    &-list{
+        display: flex;
+        align-items: center;
+        height: 30px;
+        justify-content: center;
+        overflow: hidden;
+        &>span:first-of-type{
+            display: block;
+            flex: 0 0 auto;
+            padding: 5px 0;
+            color: grey;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+    }
+    &-item{
+        flex: 0 0 auto;
+        padding:5px 5px;
+        border-radius: 10px;
+        font-size: 14px;
+        &.selected{
+            color: rgb(212, 68, 57);
+            border: 1px solid rgb(212, 68, 57);
+            opacity: 0.8;
+        }
+    }
+}

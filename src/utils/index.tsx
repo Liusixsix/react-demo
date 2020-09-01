@@ -17,3 +17,22 @@ export function throttle(func: (e) => void, delay: number) {
         }
     }
 }
+
+/**
+ * 防抖
+ * @param func {函数}
+ * @param delay {间隔}
+ */
+
+export function debounce (func,delay){
+    let timer
+    return function (...args){
+        if(timer){
+            clearTimeout(timer)
+        }
+        timer = setTimeout(()=>{
+            func.apply(this,args)
+            clearTimeout(timer)
+        },delay)
+    }
+}

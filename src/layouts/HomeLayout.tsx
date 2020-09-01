@@ -7,7 +7,7 @@ export default function Layout(props: any) {
   const { route } = props;
   return (
     <div>
-      <Top>
+      {/* <Top>
         <span
           className="iconfont menu"
           onClick={() => alert("用户中心正在开发中，敬请期待:)")}
@@ -38,7 +38,7 @@ export default function Layout(props: any) {
             <span>排行榜</span>
           </TabItem>
         </NavLink>
-      </Tab>
+      </Tab> */}
 
       {renderRoutes(route.routes)}
     </div>

@@ -2,6 +2,7 @@ import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, us
 import styled from 'styled-components'
 import BScroll from 'better-scroll'
 import PropTypes from "prop-types"
+import { debounce } from '../../utils/index'
 
 const ScrollContainer = styled.div`
     width:100%;
@@ -31,7 +32,13 @@ const Scroll = forwardRef((props: any, ref) => {
 
     const { pullUp, pullDown, onScroll } = props;
 
+    let pullUpDebounce = useMemo(() => {
+        return debounce(pullUp, 500)
+    }, [pullUp]);
 
+    let pullDownDebounce = useMemo(() => {
+        return debounce(pullDown, 500)
+    }, [pullDown])
 
     useEffect(() => {
         const scroll = new BScroll(scrollContaninerRef.current, {
@@ -45,39 +52,43 @@ const Scroll = forwardRef((props: any, ref) => {
             }
         })
         setScroll(scroll)
-
-        if (pullUp) {
-            scroll.on('scrollEnd', () => {
-                //判断是否滑动到了底部
-                if (scroll.y <= scroll.maxScrollY + 100) {
-                    pullUp()
-                }
-            })
-        }
-
-        if (pullDown) {
-            scroll.on('touchEnd', (pos) => {
-                if (pos.y > 50) {
-                    pullDown()
-                }
-            })
-        }
-
-        if (onScroll) {
-            scroll.on('scroll', scroll => {
-                onScroll(scroll)
-            })
-        }
-
-        if (refresh) {
-            scroll.refresh();
-        }
-
-        return () => {
-            scroll.off('scroll')
-            setScroll(null)
-        }
     }, [])
+
+    useEffect(()=>{
+        if(!bScroll || !onScroll) return
+        bScroll.on('scroll',onScroll)
+        return ()=>{
+            bScroll.off('scroll',onScroll)
+        }
+    },[onScroll,bScroll])
+
+    useEffect(() => {
+        if (!bScroll || !pullUp) return
+        const handlePullUp = () => {
+            if (bScroll.y <= bScroll.maxScrollY + 100) {
+                pullUpDebounce()
+            }
+        }
+        bScroll.on('scrollEnd', handlePullUp)
+        return () => {
+            bScroll.off('scrollEnd', handlePullUp)
+        }
+    }, [pullUp, pullUpDebounce, bScroll])
+
+    useEffect(() => {
+        if (!bScroll || !pullDown) return
+        const handlePullDown = (pos) => {
+            // 用户下拉动作
+            if (pos.y>50) {
+                pullDownDebounce()
+            }
+        }
+        bScroll.on('touchEnd', handlePullDown)
+        return () => {
+            bScroll.off('touchEnd', handlePullDown)
+        }
+    },[pullDown,pullDownDebounce,bScroll])
+
 
     useEffect(() => {
         if (refresh && bScroll) {

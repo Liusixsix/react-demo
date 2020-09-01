@@ -1,9 +1,10 @@
 
-import {combineReducers} from 'redux'
-import { reducer as recommendReducer   } from '../pages/recommend/store'
-
+import { combineReducers } from 'redux'
+import { reducer as recommendReducer } from '../pages/recommend/store'
+import { reducer as singersReducer } from '../pages/singers/store'
 
 
 export default combineReducers({
-    recommend:recommendReducer
+    recommend: recommendReducer,
+    singers: singersReducer
 })

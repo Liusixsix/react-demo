@@ -1,7 +1,7 @@
 import React from "react";
 import { renderRoutes } from "react-router-config";
 import { NavLink } from "react-router-dom";
-import { Top,Tab,TabItem} from "./style";
+import { Top, Tab, TabItem } from "./style";
 
 export default function Layout(props: any) {
   const { route } = props;
@@ -21,7 +21,7 @@ export default function Layout(props: any) {
         >
           &#xe62b;
         </span>
-      </Top>  
+      </Top>
       <Tab>
         <NavLink to="/recommend" activeClassName="selected">
           <TabItem>

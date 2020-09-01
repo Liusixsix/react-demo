@@ -1,0 +1,10 @@
+.rank-container{
+    position: fixed;
+    top: 88px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    &.paly{
+        bottom: 80px;
+    }
+}

@@ -1,10 +1,12 @@
 import React from "react";
 import LazyLoad from "react-lazyload";
+import { useHistory } from 'react-router-dom'
 import "./index.scss";
 function RecommendList(props) {
+  const history = useHistory()
   const { recommendList } = props;
   const enterDetail = (id) => {
-    console.log(id)
+    history.push(`/recommend/${id}`)
   }
 
   return (

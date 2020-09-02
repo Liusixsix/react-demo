@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { renderRoutes } from 'react-router-config'
 import Scroll from '../../baseUI/scroll'
 import * as actionTypes from './store/actionCreators'
 import Slider from '../../components/slider'
@@ -7,6 +8,7 @@ import RecommendList from '../../components/list'
 import './index.scss'
 
 const Recommend = (props) => {
+   
     const { bannerList, recommendList, getBannerDataDispatch, getRecommendListDispatch } = props
 
     useEffect(() => {
@@ -16,7 +18,7 @@ const Recommend = (props) => {
         if (!recommendList.length) {
             getRecommendListDispatch()
         }
-    }, [])
+    }, [bannerList.length, getBannerDataDispatch, getRecommendListDispatch, recommendList.length])
 
 
 
@@ -28,6 +30,7 @@ const Recommend = (props) => {
                     <RecommendList recommendList={recommendList}></RecommendList>
                 </div>
             </Scroll>
+            {renderRoutes(props.route.routes)}
         </div>
     )
 }
@@ -50,4 +53,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Recommend)
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Recommend))

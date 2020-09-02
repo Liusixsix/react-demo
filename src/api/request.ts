@@ -20,6 +20,12 @@ export const getSingerListRequest = (category, alpha, count) => {
     );
 };  
 
+//获取排行榜分类
 export const getRankListRequest = () =>{
     return http.get(`/toplist/detail`)
 }
+
+// 推荐歌单详情
+export const getAlbumDetailRequest = id => {
+    return http.get(`/playlist/detail?id=${id}`);
+  };

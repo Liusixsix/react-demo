@@ -1,0 +1,3 @@
+export const CHANGE_CURRENT_ALBUM = 'album/CHANGE_CURRENT_ALBUM';
+export const CHANGE_START_INDEX = 'album/CHANGE_START_INDEX';
+export const CHANGE_TOTAL_COUNT = 'album/CHANGE_TOTAL_COUNT';

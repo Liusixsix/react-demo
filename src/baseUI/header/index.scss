@@ -6,7 +6,7 @@
     width: 100%;
     z-index: 100;
     display: flex;
-    // color:#f1f1f1;
+    color:#f1f1f1;
     .icon-fanhui{
         margin-right: 8px;
         font-size: 20px;
@@ -34,6 +34,6 @@
         left:100%;
     }
     100%{
-        left:0%;
+        left:-100%;
     }
 }

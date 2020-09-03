@@ -49,3 +49,7 @@ export const filterIndex = (rankList: any[]):number => {
         }
     }
 }
+
+
+//判断一个对象是否为空对象
+export const isEmptyObject = obj => !obj || Object.keys(obj).length === 0;

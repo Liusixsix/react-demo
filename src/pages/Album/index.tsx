@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 import Scroll from "../../baseUI/scroll";
 import Header from '../../baseUI/header'
+import AlbumDetail from '../../components/album-detail/index';
 import { getAlbumList } from "./store/actionCreators";
+import {isEmptyObject} from '../../utils/index'
 import "./index.scss";
 
 //顶部的高度
@@ -57,7 +59,17 @@ export const Album = (props) => {
     >
       <div className="album-container">
         <Header ref={headerEl} title={title} isMarquee={isMarquee} handleClick={handleBack}></Header>
-
+        {
+          !isEmptyObject(currentAlbum)?(
+            <Scroll
+              onScroll={handleScroll} 
+              bounceTop={false}
+         >
+            <AlbumDetail currentAlbum={currentAlbum}></AlbumDetail>
+         </Scroll>
+          ):null
+        }
+        
       </div>
     </CSSTransition>
   );

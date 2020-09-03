@@ -1,0 +1,39 @@
+.header-wrap{
+    position: fixed;
+    padding: 5px 10px;
+    padding-top: 0;
+    height: 40px;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    // color:#f1f1f1;
+    .icon-fanhui{
+        margin-right: 8px;
+        font-size: 20px;
+        width: 20px;
+        line-height: 45px;
+    }
+    >h1{
+        font-size: 16px;
+        font-weight: 700;
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        &.marquee{
+            >span{
+                display: inline-block;
+                position: absolute;
+                animation: marquee 5s  linear infinite;
+            }
+        }
+    }
+}
+
+@keyframes marquee{
+    0%{
+        left:100%;
+    }
+    100%{
+        left:0%;
+    }
+}

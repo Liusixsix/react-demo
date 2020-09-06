@@ -1,11 +1,14 @@
 import React, { Component, useState, useEffect, useRef, useCallback } from "react";
 import { connect } from "react-redux";
 import { CSSTransition } from "react-transition-group";
+import classnames from 'classnames'
 import Scroll from "../../baseUI/scroll";
 import Header from '../../baseUI/header'
 import AlbumDetail from '../../components/album-detail/index';
+import MusicNote from "../../baseUI/music-note";
 import { getAlbumList } from "./store/actionCreators";
 import {isEmptyObject} from '../../utils/index'
+
 import "./index.scss";
 
 //顶部的高度
@@ -13,7 +16,7 @@ export const HEADER_HEIGHT: number = 45;
 
 export const Album = (props) => {
 
-  const { currentAlbum } = props
+  const { currentAlbum,songCount } = props
   const { getAlbumDataDispatch } = props;
   const [showStatus, setShowStatus] = useState(true);
   const [title, setTitle] = useState("歌单");
@@ -21,10 +24,12 @@ export const Album = (props) => {
   const id = props.match.params.id;
 
   const headerEl = useRef()
+  const musicNoteRef = useRef<any>()
 
   useEffect(() => {
     getAlbumDataDispatch(id)
   }, [getAlbumDataDispatch, id])
+
 
   const handleScroll = useCallback((pos) => {
     let minScrollY = -HEADER_HEIGHT
@@ -48,6 +53,11 @@ export const Album = (props) => {
     return setShowStatus(false)
   }
 
+
+  const musicAnimation = (x , y) => {
+    musicNoteRef.current.startAnimation({x,y})
+  }
+
   return (
     <CSSTransition
       in={showStatus}
@@ -57,7 +67,7 @@ export const Album = (props) => {
       unmountOnExit
       onExited={props.history.goBack}
     >
-      <div className="album-container">
+      <div className={classnames('album-container',{'play':!!songCount})}>  
         <Header ref={headerEl} title={title} isMarquee={isMarquee} handleClick={handleBack}></Header>
         {
           !isEmptyObject(currentAlbum)?(
@@ -65,18 +75,19 @@ export const Album = (props) => {
               onScroll={handleScroll} 
               bounceTop={false}
          >
-            <AlbumDetail currentAlbum={currentAlbum}></AlbumDetail>
+            <AlbumDetail currentAlbum={currentAlbum} musicAnimation={musicAnimation}></AlbumDetail>
          </Scroll>
           ):null
         }
-        
+        <MusicNote ref={musicNoteRef}></MusicNote>
       </div>
     </CSSTransition>
   );
 };
 
 const mapStateToProps = (state) => ({
-  currentAlbum: state.album.currentAlbum
+  currentAlbum: state.album.currentAlbum,
+  songCount:state.play.playList.length
 });
 
 const mapDispatchToProps = (dispatch) => {

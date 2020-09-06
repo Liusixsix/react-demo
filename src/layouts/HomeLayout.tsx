@@ -2,6 +2,7 @@ import React from "react";
 import { renderRoutes } from "react-router-config";
 import { NavLink } from "react-router-dom";
 import { Top, Tab, TabItem } from "./style";
+import Player from "../pages/Player";
 
 export default function Layout(props: any) {
   const { route } = props;
@@ -39,8 +40,8 @@ export default function Layout(props: any) {
           </TabItem>
         </NavLink>
       </Tab>
-
       {renderRoutes(route.routes)}
+      <Player></Player>
     </div>
   );
 }

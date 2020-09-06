@@ -17,6 +17,9 @@
     bottom: 0;
     overflow: hidden;
     width: 100%;
+    &.play{
+        bottom: 60px;
+    }
     .singer-list{
         display: flex;
         margin: auto;

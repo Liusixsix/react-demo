@@ -19,9 +19,11 @@
         flex: 1;
         position: relative;
         overflow: hidden;
+        line-height: 40px;
         &.marquee{
             >span{
                 display: inline-block;
+                width: 100%;
                 position: absolute;
                 animation: marquee 5s  linear infinite;
             }

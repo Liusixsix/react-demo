@@ -1,0 +1,16 @@
+.CircleWrapper{
+    position: relative;
+    circle{
+      stroke-width: 2px;
+        transform-origin: center;
+        &.progress-background{
+          transform: scale(0.9);
+          stroke: rgba(212, 68, 57, .5);
+        }
+        &.progress-bar{
+          transform: scale(0.9) rotate(-90deg);
+          stroke: #d44439;
+        }
+}
+
+}

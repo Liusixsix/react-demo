@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import { categoryTypes, alphaTypes } from '../../api/config'
 import { changeCategory, changeAlpha, getHotSingerList, getSingerList, changeListOffset, refreshMoreHotSingerList, refreshMoreSingerList } from './store/actionCreators'
 import Horizen from '../../baseUI/horizen'
@@ -8,7 +9,7 @@ import './index.scss'
 
 const Singers = (props) => {
     const scrollRef = useRef(null);
-    const { alpha, category, singerList } = props
+    const { alpha, category, singerList,songCount } = props
 
     const { updateAlpha, updateCategory, getHotSinger, pullUpRefresh,pullDownRefresh } = props
 
@@ -68,7 +69,7 @@ const Singers = (props) => {
                 <Horizen title={"分类(默认热门):"} list={categoryTypes} oldVal={category} handleClick={(v) => handleUpdateCategory(v)}></Horizen>
                 <Horizen title={'首字母'} list={alphaTypes} oldVal={alpha} handleClick={(v) => handleUpdateAlpha(v)}></Horizen>
             </div>
-            <div className='ListContainer'>
+            <div className={classnames('ListContainer',{'play':!!songCount})}>
                 <Scroll
                     pullUp={handlePullUp}
                     pullDown={handlePullDown}
@@ -81,10 +82,11 @@ const Singers = (props) => {
     )
 }
 
-const mapStateToProps = ({ singers }) => ({
+const mapStateToProps = ({ singers,play }) => ({
     alpha: singers.alpha,
     category: singers.category,
-    singerList: singers.singerList
+    singerList: singers.singerList,
+    songCount:play.playList.length
 })
 
 const mapDispatchToPorps = (dispatch) => {

@@ -8,14 +8,14 @@ import { filterIndex } from '../../utils'
 import './index.scss'
 
 const Rank = (props) => {
-    const { rankList, loading } = props
+    const { rankList, loading ,songCount} = props
     const { getRankListDataDispatch } = props
 
     useEffect(() => {
         if (!rankList.length) {
             getRankListDataDispatch()
         }
-    }, [])
+    }, [getRankListDataDispatch, rankList.length])
 
     const enterDetail = (item) =>{
         console.log(item)
@@ -69,7 +69,7 @@ const Rank = (props) => {
     let globalList = rankList.slice(globalStartIndex);
 
     return (
-        <div className='rank-container'>
+        <div className={classnames('rank-container',{'play':!!songCount})}>
             <Scroll>
                 <div>
                     <h1 className="offical">官方榜</h1>
@@ -84,9 +84,10 @@ const Rank = (props) => {
 }
 
 
-const mapStateToProps = ({ rank }) => ({
+const mapStateToProps = ({ rank,play }) => ({
     rankList: rank.rankList,
-    loading: rank.loading
+    loading: rank.loading,
+    songCount:play.playList.length
 })
 
 const mapDispatchProps = (dispatch) => {

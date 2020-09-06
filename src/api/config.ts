@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const baseURL: string = 'http://47.98.159.95/m-api/'
-
+// export const baseURL: string = 'http://47.98.159.95/m-api/'
+export const baseURL: string = 'http://47.114.141.217:3000/'
 const http = axios.create({
   baseURL
 })
@@ -188,3 +188,11 @@ export const alphaTypes: cate[] = [
     name: "Z"
   }
 ];
+
+
+//播放模式
+export const playMode = {
+  sequence: 0,
+  loop: 1,
+  random: 2
+};

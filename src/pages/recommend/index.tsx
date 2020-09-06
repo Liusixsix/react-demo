@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { renderRoutes } from 'react-router-config'
+import classnames from 'classnames'
 import Scroll from '../../baseUI/scroll'
 import * as actionTypes from './store/actionCreators'
 import Slider from '../../components/slider'
@@ -9,7 +10,7 @@ import './index.scss'
 
 const Recommend = (props) => {
    
-    const { bannerList, recommendList, getBannerDataDispatch, getRecommendListDispatch } = props
+    const { bannerList, recommendList, songCount,getBannerDataDispatch, getRecommendListDispatch } = props
 
     useEffect(() => {
         if (!bannerList.length) {
@@ -23,7 +24,7 @@ const Recommend = (props) => {
 
 
     return (
-        <div className='Recommend'>
+        <div className={classnames('Recommend',{'play':!!songCount})} >
             <Scroll>
                 <div>
                     <Slider bannerList={bannerList}></Slider>
@@ -37,7 +38,8 @@ const Recommend = (props) => {
 
 const mapStateToProps = (state) => ({
     bannerList: state.recommend.bannerList,
-    recommendList: state.recommend.recommendList
+    recommendList: state.recommend.recommendList,
+    songCount:state.play.playList.length,
 })
 
 

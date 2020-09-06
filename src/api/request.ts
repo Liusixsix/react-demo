@@ -29,3 +29,8 @@ export const getRankListRequest = () =>{
 export const getAlbumDetailRequest = id => {
     return http.get(`/playlist/detail?id=${id}`);
   };
+
+//获取歌曲详情
+  export const getSongDetailRequest = id => {
+    return http.get(`/song/detail?ids=${id}`);
+  };

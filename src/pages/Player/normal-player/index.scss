@@ -175,7 +175,77 @@
         color: rgba(255, 255, 255, 0.5);
       }
     }
+
+    .LyricContainer{
+      position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  /* 遮罩 会有模糊效果，看个人喜欢*/
+  /* mask-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,hsla(0,0%,100%,0)),color-stop(10%,hsla(0,0%,100%,.6)),color-stop(25%,#fff),color-stop(75%,#fff),color-stop(85%,hsla(0,0%,100%,.6)),to(hsla(0,0%,100%,0)));
+    mask-image: linear-gradient(linear,left top,left bottom,color-stop(0,hsla(0,0%,100%,0)),color-stop(10%,hsla(0,0%,100%,.6)),color-stop(25%,#fff),color-stop(75%,#fff),color-stop(85%,hsla(0,0%,100%,.6)),to(hsla(0,0%,100%,0))); */
+   
+      .LyricWrapper{
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    p {
+    line-height: 32px;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: normal;
+    font-size: 16px;
+    &.current {
+      color: #fff;
+    }
+    &.pure{
+      position: relative;
+      top: 30vh;
+    }
   }
+      }
+  }
+
+  }
+
+  .Bottom{
+    position: absolute;
+  bottom: 50px;
+  width: 100%;
+  .list{
+    width: 70%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    justify-content: space-around;
+    overflow: hidden;
+    >span:first-of-type{
+      display: block;
+      flex: 0 0 auto;
+      padding: 5px 0;
+      color: #bba8a8;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    .list-item{
+      flex: 0 0 auto;
+      font-size: 14px;
+      padding: 5px 5px;
+      border-radius: 10px;
+      color: #bba8a8;
+      &.selected{
+        color:#d44439;
+        border: 1px solid  #d44439;
+        opacity: 0.8;
+      }
+    }
+  }
+  }
+
 }
 
 @keyframes rotate {

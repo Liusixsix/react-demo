@@ -30,6 +30,8 @@ export default (state = defaultState, action) => {
       return { ...state, currentIndex: action.data };
     case actionTypes.SET_SHOW_PLAYLIST:
       return { ...state, showPlayList: action.data };
+    case actionTypes.CHANGE_SPEED:
+      return { ...state, speed: action.data };
     default:
       return state;
   }

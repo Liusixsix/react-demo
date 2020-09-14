@@ -52,7 +52,7 @@ const Scroll = forwardRef((props: any, ref) => {
             }
         })
         setScroll(scroll)
-    }, [])
+    }, [bounceBottom, bounceTop, direction])
 
     useEffect(()=>{
         if(!bScroll || !onScroll) return
@@ -87,9 +87,11 @@ const Scroll = forwardRef((props: any, ref) => {
         return () => {
             bScroll.off('touchEnd', handlePullDown)
         }
+        
+
     },[pullDown,pullDownDebounce,bScroll])
 
-
+    
     useEffect(() => {
         if (refresh && bScroll) {
             bScroll.refresh()
@@ -102,6 +104,11 @@ const Scroll = forwardRef((props: any, ref) => {
                 bScroll.refresh()
                 bScroll.scrollTo(0, 0)
             }
+        },
+        getBScroll(){
+            if(bScroll) {
+                return bScroll;
+              }
         }
     }))
 

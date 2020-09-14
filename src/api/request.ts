@@ -34,3 +34,8 @@ export const getAlbumDetailRequest = id => {
   export const getSongDetailRequest = id => {
     return http.get(`/song/detail?ids=${id}`);
   };
+
+
+export const getLyricRequest = id => {
+    return http.get(`/lyric?id=${id}`);
+  };

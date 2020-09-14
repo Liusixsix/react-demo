@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { playMode } from "./../../api/config";
 import MiniPlayer from "./mini-player";
+import Lyric from "../../api/lyric-parser";
 import { isEmptyObject, getSongUrl } from "../../utils";
 import {
   changePlayingState,
@@ -14,6 +15,7 @@ import {
   changeSpeed,
 } from "./store/actionCreators";
 import NormalPlayer from "./normal-player";
+import { getLyricRequest } from "../../api/request";
 const Player = (props) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -23,8 +25,9 @@ const Player = (props) => {
   let percent = isNaN(currentTime / duration) ? 0 : currentTime / duration;
 
   const audioRef = useRef<HTMLAudioElement>();
-  const currentLyric = useRef();
-
+  const currentLyric = useRef<any>();
+  const currentLineNum = useRef(0);
+  const songReady = useRef(true);
   const {
     speed,
     playing,
@@ -71,7 +74,50 @@ const Player = (props) => {
     playing ? audioRef.current.play() : audioRef.current.pause();
   }, [playing]);
 
-  const getLyric = (id) => {};
+  const handleLyric:any = ({ lineNum, txt }:{lineNum:any,txt:any}):void => {
+    if (!currentLyric.current) return;
+    currentLineNum.current = lineNum;
+    setPlayingLyric(txt);
+  };
+  useEffect(() => {
+    if (!fullScreen) return;
+    if (currentLyric.current && currentLyric.current.lines.length) {
+      handleLyric({
+        lineNum: currentLineNum.current,
+        txt: currentLyric.current.lines[currentLineNum.current].txt,
+      });
+    }
+  }, [fullScreen]);
+
+
+  const getLyric = (id) => {
+      let lyric = "";
+      if (currentLyric.current) {
+        currentLyric.current.stop();
+      }
+        // 避免songReady恒为false的情况
+    setTimeout(() => {
+      songReady.current = true;
+    }, 3000);
+      getLyricRequest(id).then((data:any)=>{
+        lyric = data.lrc && data.lrc.lyric;
+        if (!lyric) {
+          currentLyric.current = null;
+          return;
+        }
+        currentLyric.current = new Lyric(lyric, handleLyric, speed);
+        currentLyric.current.play();
+        currentLineNum.current = 0;
+        currentLyric.current.seek(0);
+      }).catch(() => {
+        currentLyric.current = "";
+        songReady.current = true;
+        audioRef.current.play();
+      });
+  };
+
+
+
 
   // 切换播放状态
   const clickPlaying = (e, state) => {
@@ -79,14 +125,63 @@ const Player = (props) => {
     togglePlayingDispatch(state);
   };
 
+  const clickSpeed = (newSpeed) => {
+    changeSpeedDispatch(newSpeed);
+    audioRef.current.playbackRate = newSpeed;
+    currentLyric.current.changeSpeed(newSpeed);
+    currentLyric.current.seek(currentTime * 1000);
+  };
+
+  const handleLoop = () => {
+    audioRef.current.currentTime = 0;
+    togglePlayingDispatch(true);
+    audioRef.current.play();
+    if (currentLyric.current) {
+      currentLyric.current.seek(0);
+    }
+  };
+
+  const handlePrev = ()=>{
+    if (playList.length === 1) {
+      handleLoop();
+      return;
+    }
+    let index = currentIndex - 1;
+    if (index === 0) index = playList.length - 1;
+    if (!playing) togglePlayingDispatch(true);
+    changeCurrentIndexDispatch(index);
+  }
+
+  const handleNext = () => {
+    if (playList.length === 1) {
+      handleLoop();
+      return;
+    }
+    let index = currentIndex + 1;
+    if (index === playList.length) index = 0;
+    if (!playing) togglePlayingDispatch(true);
+    changeCurrentIndexDispatch(index);
+  };
+
   const updateTime = (e) => {
     //更新当前播放时间
     setCurrentTime(e.target.currentTime);
   };
+  
 
-  const handleEnd = () => {};
+  const handleEnd = () => {
+    if (mode === playMode.loop) {
+      handleLoop();
+    } else {
+      handleNext();
+    }
+  };
 
-  const handleError = () => {};
+  const handleError = () => {
+    songReady.current = true;
+    handleNext();
+    alert("播放出错");
+  };
 
   return (
     <div>
@@ -107,6 +202,13 @@ const Player = (props) => {
           full={fullScreen}
           song={currentSong}
           percent={percent}
+          toggleFullScreenDispatch={toggleFullScreenDispatch}
+          handlePrev={handlePrev}
+          currentLineNum={currentLineNum.current}
+          currentPlayingLyric={currentPlayingLyric}
+          currentLyric={currentLyric.current}
+          speed={speed}
+          clickSpeed={clickSpeed}
          >
 
          </NormalPlayer>
@@ -114,6 +216,7 @@ const Player = (props) => {
 
       <audio
         ref={audioRef}
+        
         onTimeUpdate={updateTime}
         onEnded={handleEnd}
         onError={handleError}

@@ -62,7 +62,8 @@ const Player = (props) => {
     audioRef.current.playbackRate = speed;
     togglePlayingDispatch(true);
     getLyric(current.id);
-
+    setCurrentTime(0)
+    
     // eslint-disable-next-line
   }, [currentIndex, playList]);
 

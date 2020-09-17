@@ -14,6 +14,7 @@ const Home = lazy(() => import("../pages/Home"));
 const Recommend = lazy(() => import("../pages/recommend"));
 const Album = lazy(() => import("../pages/Album"));
 const Singers = lazy(() => import("../pages/singers"));
+const SingerComponent = lazy(()=>import('../pages/singer'))
 const Rank = lazy(() => import("../pages/rank"));
 
 export default [
@@ -42,6 +43,13 @@ export default [
           {
             path: "/singers",
             component: SuspenseComponent(Singers),
+            key: "singers",
+            routes: [
+              {
+                path: "/singers/:id",
+                component: SuspenseComponent(SingerComponent)
+              }
+            ]
           },
           {
             path: "/rank",

@@ -7,7 +7,7 @@ import Horizen from '../../baseUI/horizen'
 import Scroll from '../../baseUI/scroll'
 import './index.scss'
 
-const Singers = (props) => {
+const Singers = (props:any) => {
     const scrollRef = useRef(null);
     const { alpha, category, singerList,songCount } = props
 
@@ -32,8 +32,8 @@ const Singers = (props) => {
     const handlePullDown = () => {
         pullDownRefresh(category,alpha)
     }
-    const handleClickSinger =(item) =>{
-        console.log(item)
+    const handleClickSinger =(id) =>{
+        props.history.push(`/singers/${id}`);
     }
 
     useEffect(() => {
@@ -49,7 +49,7 @@ const Singers = (props) => {
                 {
                     singerList.map((item, index) => {
                         return (
-                            <div className="item" key={index} onClick={()=>handleClickSinger(item)}>
+                            <div className="item" key={index} onClick={()=>handleClickSinger(item.id)}>
                                 <div className='img_wrapper'>
                                     <img src={`${item.picUrl}?params=300x300`} width='100%' height='100%' alt="" />
                                 </div>

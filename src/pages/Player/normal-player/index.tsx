@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { CSSTransition } from "react-transition-group";
 import animations from "create-keyframe-animation";
 import "./index.scss";
-import { getName } from "../../../utils";
+import ProgressBar from '../../../baseUI/progress-bar'
+import { getName, formatPlayTime } from "../../../utils";
 import Scroll from "../../../baseUI/scroll";
-import {list} from '../../../api/config'
+import { list, playMode } from '../../../api/config'
 const NormalPlayer = (props) => {
   const {
     full,
@@ -13,9 +14,14 @@ const NormalPlayer = (props) => {
     currentLineNum,
     currentPlayingLyric,
     currentLyric,
-    speed
+    speed,
+    currentTime,
+    percent,
+    duration,
+    mode,
+    changeMode
   } = props;
-  const { toggleFullScreenDispatch,clickSpeed } = props;
+  const { toggleFullScreenDispatch, clickSpeed, onProgressChange, clickPlaying,handlePrev,handleNext} = props;
   const [currentState, setCurrentState] = useState<any>(0);
   const normalPlayerRef = useRef<HTMLDivElement>();
   const cdWrapperRef = useRef<HTMLDivElement>();
@@ -108,6 +114,23 @@ const NormalPlayer = (props) => {
     setCurrentState(nextState);
   };
 
+  const getPlayMode = ()=>{
+    let content:any
+    if(mode===playMode.sequence){
+        content='&#xe726;'
+    }else if(mode===playMode.loop){
+        content='&#xe607;'
+    }else{
+      content='&#xe624;'
+    }
+    return content
+  }
+
+  const clickPlayingCB = useCallback(e=>{
+    clickPlaying(e,!playing)
+  },[clickPlaying,playing])
+
+
   return (
     <CSSTransition
       classNames="normal"
@@ -175,9 +198,8 @@ const NormalPlayer = (props) => {
                       lyricLineRefs.current[index] = React.createRef();
                       return (
                         <p
-                          className={`text ${
-                            currentLineNum === index ? "current" : ""
-                          }`}
+                          className={`text ${currentLineNum === index ? "current" : ""
+                            }`}
                           key={item + index}
                           ref={lyricLineRefs.current[index]}
                         >
@@ -186,8 +208,8 @@ const NormalPlayer = (props) => {
                       );
                     })
                   ) : (
-                    <p className="text pure">纯音乐，请欣赏。</p>
-                  )}
+                      <p className="text pure">纯音乐，请欣赏。</p>
+                    )}
                 </div>
               </Scroll>
             </div>
@@ -209,7 +231,46 @@ const NormalPlayer = (props) => {
               );
             })}
           </div>
+
+          <div className="ProgressWrapper">
+            <span className='time-time-l'>{formatPlayTime(currentTime)}</span>
+            <div className="progress-bar-wrapper">
+              <ProgressBar
+                percent={percent}
+                percentChange={onProgressChange}
+              >
+              </ProgressBar>
+            </div>
+            <div className="time time-r">{formatPlayTime(duration)}</div>
+          </div>
+
+
+          <div className='Operators'>
+            <div className='icon i-left' onClick={changeMode}>
+              <i className='iconfont'
+                dangerouslySetInnerHTML={{__html:getPlayMode()}}
+              ></i>
+            </div>
+            <div className='icon i-left' onClick={handlePrev}>
+              <i className='iconfont icon-shangyishoushangyige'></i>
+            </div>
+            <div className='icon i-center'   onClick={clickPlayingCB}>
+              {
+                playing?<i className='iconfont icon-zanting1'></i>:
+                <i className='iconfont icon-zanting'></i>
+              }
+            </div>
+            <div className='icon i-right'  onClick={handleNext}>
+              <i className='iconfont icon-xiayishou_huaban'></i>
+            </div>
+            <div className='icon i-right'>
+              <i className='iconfont icon-bofangliebiao'></i>
+            </div>
+          </div>
         </div>
+
+
+
       </div>
     </CSSTransition>
   );

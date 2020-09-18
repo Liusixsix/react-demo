@@ -1,17 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
+import { renderRoutes } from 'react-router-config'
 import { categoryTypes, alphaTypes } from '../../api/config'
 import { changeCategory, changeAlpha, getHotSingerList, getSingerList, changeListOffset, refreshMoreHotSingerList, refreshMoreSingerList } from './store/actionCreators'
 import Horizen from '../../baseUI/horizen'
 import Scroll from '../../baseUI/scroll'
 import './index.scss'
 
-const Singers = (props:any) => {
+const Singers = (props: any) => {
     const scrollRef = useRef(null);
-    const { alpha, category, singerList,songCount } = props
+    const { alpha, category, singerList, songCount } = props
 
-    const { updateAlpha, updateCategory, getHotSinger, pullUpRefresh,pullDownRefresh } = props
+    const { updateAlpha, updateCategory, getHotSinger, pullUpRefresh, pullDownRefresh } = props
 
     const handleUpdateCategory = (newVal) => {
         if (category === newVal) return
@@ -30,9 +31,9 @@ const Singers = (props:any) => {
     }
 
     const handlePullDown = () => {
-        pullDownRefresh(category,alpha)
+        pullDownRefresh(category, alpha)
     }
-    const handleClickSinger =(id) =>{
+    const handleClickSinger = (id) => {
         props.history.push(`/singers/${id}`);
     }
 
@@ -49,7 +50,7 @@ const Singers = (props:any) => {
                 {
                     singerList.map((item, index) => {
                         return (
-                            <div className="item" key={index} onClick={()=>handleClickSinger(item.id)}>
+                            <div className="item" key={index} onClick={() => handleClickSinger(item.id)}>
                                 <div className='img_wrapper'>
                                     <img src={`${item.picUrl}?params=300x300`} width='100%' height='100%' alt="" />
                                 </div>
@@ -69,7 +70,7 @@ const Singers = (props:any) => {
                 <Horizen title={"分类(默认热门):"} list={categoryTypes} oldVal={category} handleClick={(v) => handleUpdateCategory(v)}></Horizen>
                 <Horizen title={'首字母'} list={alphaTypes} oldVal={alpha} handleClick={(v) => handleUpdateAlpha(v)}></Horizen>
             </div>
-            <div className={classnames('ListContainer',{'play':!!songCount})}>
+            <div className={classnames('ListContainer', { 'play': !!songCount })}>
                 <Scroll
                     pullUp={handlePullUp}
                     pullDown={handlePullDown}
@@ -78,15 +79,16 @@ const Singers = (props:any) => {
                     {renderSingerList()}
                 </Scroll>
             </div>
+            {renderRoutes(props.route.routes)}
         </div>
     )
 }
 
-const mapStateToProps = ({ singers,play }) => ({
+const mapStateToProps = ({ singers, play }) => ({
     alpha: singers.alpha,
     category: singers.category,
     singerList: singers.singerList,
-    songCount:play.playList.length
+    songCount: play.playList.length
 })
 
 const mapDispatchToPorps = (dispatch) => {

@@ -43,7 +43,7 @@ export default [
           {
             path: "/singers",
             component: SuspenseComponent(Singers),
-            key: "singers",
+            // key: "singers",
             routes: [
               {
                 path: "/singers/:id",

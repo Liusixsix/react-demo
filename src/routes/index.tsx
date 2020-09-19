@@ -54,6 +54,12 @@ export default [
           {
             path: "/rank",
             component: SuspenseComponent(Rank),
+            routes: [
+              {
+                path: "/rank/:id",
+                component: SuspenseComponent(Album),
+              },
+            ],
           },
         ],
       },

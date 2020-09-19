@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
+import {renderRoutes } from 'react-router-config'
 import Scroll from '../../baseUI/scroll'
 import Loading from '../../baseUI/loading'
 import { getRankList } from './store'
@@ -18,7 +19,7 @@ const Rank = (props) => {
     }, [getRankListDataDispatch, rankList.length])
 
     const enterDetail = (item) =>{
-        console.log(item)
+        props.history.push(`/rank/${item.id}`)
     }
 
 
@@ -79,6 +80,7 @@ const Rank = (props) => {
                    { loading &&<Loading></Loading>}
                 </div>
             </Scroll>
+            {renderRoutes(props.route.routes)}
         </div>
     )
 }
